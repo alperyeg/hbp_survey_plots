@@ -5,6 +5,8 @@ import pandas as pd
 import plot_likert
 import seaborn as sns
 
+from matplotlib.transforms import ScaledTranslation
+
 sns.set_context("paper")
 sns.set_theme(style='white', palette='vlag')
 
@@ -32,7 +34,7 @@ types.append(types.pop(types.index('Satisfaction')))
 save_name = ""
 if file_name in ['SGA1-2_summary2.xlsx', 'YRE Surveys_SGA1-2_summary.xlsx']:
     categories = ['Failed', 'Insufficient', 'Sufficient', 'Satisfactory', 'Good', 'Excellent']
-    save_name = f"conf_ratings_sga1-sga2_{plot_type}.pdf" if file_name == 'SGA1-2_summary2.xlsx' else f'ratings_YRE_sga1-2_{plot_type}.pdf'
+    save_name = f"conf_ratings_sga1-sga2_{plot_type}.pdf" if file_name == 'SGA1-2_summary2.xlsx' else f'YRE_ratings_sga1-2_{plot_type}.pdf'
     adjust_subplot = {'top':0.88, 'bottom':0.11, 'left':0.125, 'right':0.9, 'hspace':0.2, 'wspace':0.8}
     ax_index = 1
     last_index = -1
@@ -41,7 +43,7 @@ if file_name in ['SGA1-2_summary2.xlsx', 'YRE Surveys_SGA1-2_summary.xlsx']:
                     'loc':'lower left', 'frameon':True}
 else:
     categories = ["Very poor", "Poor", "Fair", "Good", "Excellent"]
-    save_name = f"conf_ratings_sga3_{plot_type}.pdf" if file_name =='SGA3_summary.xlsx' else f'ratings_YRE_sga3_{plot_type}.pdf'
+    save_name = f"conf_ratings_sga3_{plot_type}.pdf" if file_name =='SGA3_summary.xlsx' else f'YRE_ratings_sga3_{plot_type}.pdf'
     subplot_props =  {'nrows':2, 'ncols':2, 'figsize':(20, 8)}
     adjust_subplot = {'top':0.880, 'bottom':0.110, 'left':0.140, 'right':0.900, 'hspace':0.33, 'wspace':0.360}
     ax_index = (0, 0)
@@ -75,6 +77,7 @@ ratings_df.columns = ['Type', 'Class'] + categories
 # Plotting
 fig, axes = plt.subplots(**subplot_props)
 fontsize = 15
+sublabels = ['A', 'B', 'C', 'D']
 j = 0
 for i, t in enumerate(types):
     if file_name in ['SGA1-2_summary2.xlsx', 'YRE Surveys_SGA1-2_summary.xlsx']:
@@ -84,7 +87,7 @@ for i, t in enumerate(types):
         ax = axes[j, i % 2]
     # Per type
     new_df = ratings_df[ratings_df['Type'] == t]
-    print(new_df)
+    # print(new_df)
     # Likert graph
     if plot_type == 'likert':
         # Need to define color range
@@ -99,9 +102,13 @@ for i, t in enumerate(types):
         new_df.plot(kind='barh', stacked=True, ax=ax)
     # Axes edits
     ax.set_title(t, fontsize=fontsize)
+    ax.text(0.0, 1.0, sublabels[i],
+            transform=(ax.transAxes + ScaledTranslation(-20/72, +7/72, fig.dpi_scale_trans)),
+            fontsize=fontsize, va='bottom', weight='demibold')
     ax.set_xlabel(None)
     ax.set_ylabel(None)
-    ax.tick_params(axis='y', labelsize=12)
+    ax.tick_params(axis='y', labelsize=12.5)
+    ax.tick_params(axis='x', labelsize=13)
     # set category `class` names as labels
     ax.set_yticklabels(new_df['Class'].to_list())
     ax.legend_.remove()
@@ -115,6 +122,7 @@ for i, t in enumerate(types):
                 label_text = label.get_text()
                 label_text = label_text.rstrip("%")
                 number = float(label_text)
+                # remove percentage less than 6 %
                 if number < 6:
                     label.set_text("")
 
