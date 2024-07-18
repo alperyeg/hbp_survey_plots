@@ -16,9 +16,9 @@ sns.set_theme(style='white', palette='vlag')
 parser = argparse.ArgumentParser()
 parser.add_argument('--filename', type=str, default='SGA1-2_summary2.xlsx', nargs='?')
 parser.add_argument('--total_mean', default=False, action='store_true',
-                    help='Shows mean of participants')
+                    help='Shows mean of participants response rate')
 parser.add_argument('--total_std', default=False, action='store_true',
-                    help='Shows standard deviation of participants')
+                    help='Shows standard deviation participants response rate')
 parser.add_argument('--plot_type', type=str, default='stacked', nargs='?',
                     help='Defines the type of plot. Likert graph or stacked histograms')
 parser.add_argument('--percentage', default=False, action='store_true',
