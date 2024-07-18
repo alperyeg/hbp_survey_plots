@@ -25,8 +25,8 @@ Optionally to create a [Likert graph](https://github.com/nmalkin/plot-likert) (c
 The file `plot_survey_results.py` requires the input data `SGA1-2_summary2.xlsx`, `SGA3_summary.xlsx` `YRE Surveys_SGA1-2_summary.xlsx` or `YRE Surveys_SGA3_summary.xlsx`. These files are located in the main repository. 
 To load one of the files and plot a figure use the argument `--filename`, e.g. `python plot_survey_results.py --filename SGA1-2_summary2.xlsx`. 
 - `--filename`, requires the name of the file as a string. A path can also be supplied. If no filename is given then the script assumes the file `SGA1-2_summary2.xlsx`
-- `--total_mean`, if specified it prints out the average numbers of the participants.
-- `--total_std`, if specified it prints out the average standard deviation of the participants. 
+- `--total_mean`, if specified it prints out the average response rate of the participants.
+- `--total_std`, if specified it prints out the standard deviation of the participants' response rate. 
 - `--plot_type`, defines the type of the plot. Available are `stacked` plotting horizontal stacked histograms or `likert` for Likert graphs. If not specified the default is `stacked`. 
 - `--percentage`, defines if percentages or absoulte values will be printed on the bars.
 - Thus, if no arguments are given, i.e. `python plot_survey_results.py`, the script assumes that `python plot_survey_results.py --filename SGA1-2_summary2.xlsx` is called.
