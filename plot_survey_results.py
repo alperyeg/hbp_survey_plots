@@ -1,5 +1,6 @@
 import argparse
 import matplotlib.pyplot as plt
+import numpy as np
 import os
 import pandas as pd
 import plot_likert
@@ -16,6 +17,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--filename', type=str, default='SGA1-2_summary2.xlsx', nargs='?')
 parser.add_argument('--total_mean', default=False, action='store_true',
                     help='Shows mean of participants')
+parser.add_argument('--total_std', default=False, action='store_true',
+                    help='Shows standard deviation of participants')
 parser.add_argument('--plot_type', type=str, default='stacked', nargs='?',
                     help='Defines the type of plot. Likert graph or stacked histograms')
 parser.add_argument('--percentage', default=False, action='store_true',
@@ -54,12 +57,15 @@ else:
 # Calculate mean ratings for each type-class combination
 ratings_dict = {}
 total_mean = []
+total_std = []
 for t in types:
     for c in classes:
         df_class = df[(df['Type'] == t) & (df['Class'] == c)]
         if not df_class.empty:
             mean = df_class.mean(numeric_only=True)
             total_mean.append(mean)
+            std = df_class.std(numeric_only=True)
+            total_std.append(std)
             if percentage and plot_type == 'stacked':
                 percent = mean * 100 / mean.sum()
                 ratings_dict[(t, c)] = percent
@@ -67,9 +73,11 @@ for t in types:
                 ratings_dict[(t, c)] = mean
 
 if args.total_mean:
-    import numpy as np
     print('Total mean: ', np.mean([i.sum() for i in total_mean]))
 
+if args.total_std:
+    print('Total std: ', np.std([i.sum() for i in total_std]))
+    
 # Convert dictionary to DataFrame
 ratings_df = pd.DataFrame(ratings_dict).T.reset_index()
 ratings_df.columns = ['Type', 'Class'] + categories
