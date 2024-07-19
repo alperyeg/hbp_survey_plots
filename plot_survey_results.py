@@ -16,9 +16,9 @@ sns.set_theme(style='white', palette='vlag')
 parser = argparse.ArgumentParser()
 parser.add_argument('--filename', type=str, default='SGA1-2_summary2.xlsx', nargs='?')
 parser.add_argument('--total_mean', default=False, action='store_true',
-                    help='Shows mean of participants response rate')
+                    help='Shows means of participants response rate')
 parser.add_argument('--total_std', default=False, action='store_true',
-                    help='Shows standard deviation participants response rate')
+                    help='Shows standard deviations participants response rate')
 parser.add_argument('--plot_type', type=str, default='stacked', nargs='?',
                     help='Defines the type of plot. Likert graph or stacked histograms')
 parser.add_argument('--percentage', default=False, action='store_true',
@@ -56,16 +56,12 @@ else:
 
 # Calculate mean ratings for each type-class combination
 ratings_dict = {}
-total_mean = []
-total_std = []
 for t in types:
     for c in classes:
         df_class = df[(df['Type'] == t) & (df['Class'] == c)]
         if not df_class.empty:
             mean = df_class.mean(numeric_only=True)
-            total_mean.append(mean)
             std = df_class.std(numeric_only=True)
-            total_std.append(std)
             if percentage and plot_type == 'stacked':
                 percent = mean * 100 / mean.sum()
                 ratings_dict[(t, c)] = percent
@@ -73,10 +69,11 @@ for t in types:
                 ratings_dict[(t, c)] = mean
 
 if args.total_mean:
-    print('Total mean: ', np.mean([i.sum() for i in total_mean]))
-
+    numbers = df.select_dtypes('number')
+    print('Total mean:\n', numbers.mean(axis=0))
 if args.total_std:
-    print('Total std: ', np.std([i.sum() for i in total_std]))
+    numbers = df.select_dtypes('number')
+    print('Total std:\n', numbers.std(axis=0))
     
 # Convert dictionary to DataFrame
 ratings_df = pd.DataFrame(ratings_dict).T.reset_index()
