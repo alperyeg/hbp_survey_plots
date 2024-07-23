@@ -12,7 +12,6 @@ sns.set_context("paper")
 sns.set_theme(style='white', palette='vlag')
 
 # Read data
- # Read data
 parser = argparse.ArgumentParser()
 parser.add_argument('--filename', type=str, default='SGA1-2_summary2.xlsx', nargs='?')
 parser.add_argument('--total_mean', default=False, action='store_true',
@@ -61,7 +60,6 @@ for t in types:
         df_class = df[(df['Type'] == t) & (df['Class'] == c)]
         if not df_class.empty:
             mean = df_class.mean(numeric_only=True)
-            std = df_class.std(numeric_only=True)
             if percentage and plot_type == 'stacked':
                 percent = mean * 100 / mean.sum()
                 ratings_dict[(t, c)] = percent
