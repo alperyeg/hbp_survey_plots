@@ -11,13 +11,12 @@ sns.set_theme(style='white')
 # Read data
 parser = argparse.ArgumentParser()
 parser.add_argument('--filename', type=str, default='SGA1-2_summary2.xlsx', nargs='?')
-parser.add_argument('--total_deviation', default=False, action='store_true',
+parser.add_argument('--success_rates', default=False, action='store_true',
                     help='Additionally shows boxplot indicating success rates.')
 parser.add_argument('--save', default=False, action='store_true',
                     help='Additionally shows boxplot indicating success rates.')
 args = parser.parse_args()
-file_name =  args.filename
-save = args.save
+file_name = args.filename
 df = pd.read_excel(file_name)
 file_name = os.path.basename(file_name)
 
@@ -49,17 +48,17 @@ plt.rcParams['xtick.labelsize'] = 13
 plt.rcParams['ytick.labelsize'] = 13
 g = sns.catplot(kind='box', data=ratings_df, errorbar="sd",  height=6, aspect=1.3, orient='h', palette='Reds')
 g.set_xlabels('Response', size=13)
-if args.total_deviation:
+if args.success_rates:
     # sns.catplot(kind='box', data=df.select_dtypes('number'), errorbar="sd",  height=6, aspect=1.3, orient='h', palette='Blues')
     p = sns.catplot(kind='box', data=ratings_df.T.reset_index(), errorbar="sd",  height=6, aspect=1.3, orient='h', palette='vlag')
     if file_name == 'YRE Surveys_SGA1-2_summary.xlsx':
         sn = 'total_deviation_sga1-2.eps'
     else:
         sn = 'total_deviation_sga3.eps'
-    if save:
+    if args.save:
         p.savefig(sn, dpi=600, bbox_inches='tight', pad_inches=0.1)
 
 # Save figure
-if save:
+if args.save:
     g.savefig(save_name, dpi=600, bbox_inches='tight', pad_inches=0.1)
 plt.show()
