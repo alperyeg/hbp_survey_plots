@@ -33,7 +33,7 @@ for s in sheet:
     df = xls.select_dtypes('number')
     if percentage:
         df = df.div(df.sum(axis=1), axis=0) * 100
-    legend_props = {'bbox_to_anchor':(0.15, -0.2), 'ncols':len(df.columns),
+    legend_props = {'bbox_to_anchor':(0.15, -0.23), 'ncols':len(df.columns),
                     'loc':'lower left', 'frameon':True}
 
     df.plot(kind='barh', stacked=True, ax=ax)
@@ -44,8 +44,8 @@ for s in sheet:
             fontsize=fontsize, va='bottom', weight='demibold')
     ax.set_xlabel(None)
     ax.set_ylabel(None)
-    ax.tick_params(axis='y', labelsize=12.5)
-    ax.tick_params(axis='x', labelsize=13)
+    ax.tick_params(axis='y', labelsize=14)
+    ax.tick_params(axis='x', labelsize=14)
     ax.set_yticklabels(xls['Class'].to_list())
     for container in ax.containers:
         labels = ax.bar_label(container, label_type='center',
