@@ -14,7 +14,7 @@ parser.add_argument('--filename', type=str, default='SGA1-2_summary2.xlsx', narg
 parser.add_argument('--success_rates', default=False, action='store_true',
                     help='Additionally shows boxplot indicating success rates.')
 parser.add_argument('--save', default=False, action='store_true',
-                    help='Additionally shows boxplot indicating success rates.')
+                    help='Whether the plots should be saved.')
 args = parser.parse_args()
 file_name = args.filename
 df = pd.read_excel(file_name)
